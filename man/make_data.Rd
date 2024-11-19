@@ -12,6 +12,8 @@ make_data(
   expand = 1,
   mapped_p = FALSE,
   hyper = FALSE,
+  LT = 0,
+  LC = 0,
   ...
 )
 }

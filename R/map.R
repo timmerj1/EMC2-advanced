@@ -185,8 +185,8 @@ mapped_par <- function(p_vector,design,model=NULL,
     ok <- c(ok,TRUE)
   } else adadm <- dadm
   pars_full <- get_pars_matrix(p_vector,dadm)
-  pars <- pars_full[,!(colnames(pars_full) %in% c("lI"))] # for stop-signal: remove latent inhibition factor
-  out <- cbind(adadm[,ok],round(pars[,!dimnames(pars)[[2]]=="SSD"],digits))
+  pars <- pars_full[,!(colnames(pars_full) %in% c("lI")),drop=FALSE] # for stop-signal: remove latent inhibition factor
+  out <- cbind(adadm[,ok,drop=FALSE],round(pars[,!dimnames(pars)[[2]]=="SSD",drop=FALSE],digits))
   out <- out[,!(names(out) %in% c("lI","staircase", "SSD"))]  # stop signal models  if (model()$type=="SDT")  out <- out[adadm$lR!=levels(adadm$lR)[length(levels(dadm$lR))],]
   if (model()$type=="DDM")  out <- out[,!(names(out) %in% c("lR","lM"))]
   if (any(names(out)=="RACE") && remove_RACE)

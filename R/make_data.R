@@ -103,7 +103,7 @@ make_missing <- function(data,LT=0,UT=Inf,LC=0,UC=Inf,
 #' @export
 
 make_data <- function(parameters,design = NULL,n_trials=NULL,data=NULL,expand=1,
-                      mapped_p=FALSE, hyper = FALSE, ...)
+                      mapped_p=FALSE, hyper = FALSE, LT = 0, LC = 0,...)
 {
   # #' @param LT lower truncation bound below which data are removed (scalar or subject named vector)
   # #' @param UT upper truncation bound above which data are removed (scalar or subject named vector)
@@ -123,9 +123,9 @@ make_data <- function(parameters,design = NULL,n_trials=NULL,data=NULL,expand=1,
   # #' @param Fcovariates either a data frame of covariate values with the same
   # #' number of rows as the data or a list of functions specifying covariates for
   # #' each trial. Must have names specified in the design Fcovariates argument.
-  LT<-0
+  # LT<-0
   UT<-Inf
-  LC<-0
+  # LC<-0
   UC<-Inf
   LCresponse<-TRUE
   UCresponse<-TRUE

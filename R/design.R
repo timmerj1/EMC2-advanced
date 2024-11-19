@@ -754,7 +754,7 @@ design_model <- function(data,design,model=NULL,
       if (length(attr(data,"LT"))==1 && is.null(names(attr(data,"LT"))))
         attr(data,"LT") <- stats::setNames(rep(attr(data,"LT"),length(levels(data$subjects))),
                                            levels(data$subjects))
-      if (any(attr(data,"LT")<0)) stop("Lower truncation cannot be negative")
+      # if (any(attr(data,"LT")<0)) stop("Lower truncation cannot be negative")
       check_rt(attr(data,"LT"),data,upper=FALSE)
     }
     if (!is.null(attr(data,"UT")) & !is.null(attr(data,"LT"))) {
@@ -775,7 +775,7 @@ design_model <- function(data,design,model=NULL,
       if (length(attr(data,"LC"))==1 && is.null(names(attr(data,"LC"))))
         attr(data,"LC") <- stats::setNames(rep(attr(data,"LC"),length(levels(data$subjects))),
                                            levels(data$subjects))
-      if (any(attr(data,"LC")<0)) stop("Lower censor cannot be negative")
+      # if (any(attr(data,"LC")<0)) stop("Lower censor cannot be negative")
       check_rt(attr(data,"LC"),data,upper=FALSE)
       if (!is.null(attr(data,"LT")) && attr(data,"LT") > attr(data,"LC"))
         stop("Lower censor must be greater than lower truncation")
