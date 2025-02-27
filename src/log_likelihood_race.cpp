@@ -6,7 +6,7 @@
 #include "model_RDM.h"
 #include "model_DDM.h"
 #include "advantage.h"
-#include "numeric_integration.h"
+#include "numerical_integration.h"
 using namespace Rcpp;
 
 

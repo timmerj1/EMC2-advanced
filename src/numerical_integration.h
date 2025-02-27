@@ -1,5 +1,5 @@
-#ifndef numeric_integration_h
-#define numeric_integration_h
+#ifndef numerical_integration_h
+#define numerical_integration_h
 
 // [[Rcpp::depends(RcppEigen)]]
 // [[Rcpp::depends(RcppNumerical)]]
