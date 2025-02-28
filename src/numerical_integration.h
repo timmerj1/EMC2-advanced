@@ -56,7 +56,7 @@ NumericVector f_integrate(Rcpp::NumericMatrix pars,
   double err_est;
   int err_code;
   double res = integrate(f, lower, upper, err_est, err_code);
-  if (err_code != 0 && upper == R_PosInf) {
+  if (err_code == 1 && upper == R_PosInf) {
     double err_est_hacky;
     int err_code_hacky;
     double res_hacky = integrate(f, lower, 10, err_est_hacky, err_code_hacky);
