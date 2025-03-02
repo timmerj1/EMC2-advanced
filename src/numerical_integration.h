@@ -62,6 +62,9 @@ NumericVector f_integrate(Rcpp::NumericMatrix pars,
     double res_hacky = integrate(f, lower, 10, err_est_hacky, err_code_hacky);
     NumericVector out{res_hacky, err_est_hacky, (double) err_code_hacky};
     return out;
+  } else if (err_code > 0) {
+    NumericVector out{min_ll, err_est, (double) err_code};
+    return out;
   } else {
     NumericVector out{res, err_est, (double) err_code};
     return out;
