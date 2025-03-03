@@ -31,11 +31,11 @@ public:
     double accumulators = pars.nrow();
     NumericVector t(accumulators);
     t.fill(x);
-    Rcpp::NumericVector d = dfun(t, pars, winner, min_ll);
+    Rcpp::NumericVector d = dfun(t, pars, winner, exp(min_ll));
     double out = Rcpp::as<double>(d);
 
     if (accumulators > 1) {
-      Rcpp::NumericVector p = 1 - pfun(t, pars, !winner, min_ll);
+      Rcpp::NumericVector p = 1 - pfun(t, pars, !winner, exp(min_ll));
       double prod_p = std::accumulate(p.begin(), p.end(), 1.0,
                                       std::multiplies<double>());
       out *= prod_p;

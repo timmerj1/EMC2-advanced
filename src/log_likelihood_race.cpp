@@ -432,7 +432,7 @@ double c_log_likelihood_race_missing(NumericMatrix pars, DataFrame data,
           pifast(j,_) = mparsfast(i * n_acc + j,_);
         }
       }
-      NumericVector tmp = f_integrate(pifast, winnerfast(_,i), dfun, pfun, exp(min_ll), LT, LC);
+      NumericVector tmp = f_integrate(pifast, winnerfast(_,i), dfun, pfun, min_ll, LT, LC);
       ldstofixfast[i] = std::log(std::max(0.0, std::min(tmp[0], 1.0)));
     }
     lds[tofixfast] = ldstofixfast;
@@ -466,7 +466,7 @@ double c_log_likelihood_race_missing(NumericMatrix pars, DataFrame data,
           pislow(j,_) = mparsslow(i * n_acc + j,_);
         }
       }
-      NumericVector tmp = f_integrate(pislow, winnerslow(_,i), dfun, pfun, exp(min_ll), UC, UT);
+      NumericVector tmp = f_integrate(pislow, winnerslow(_,i), dfun, pfun, min_ll, UC, UT);
       ldstofixslow[i] = std::log(std::max(0.0, std::min(tmp[0], 1.0)));
     }
     lds[tofixslow] = ldstofixslow;
@@ -500,8 +500,8 @@ double c_log_likelihood_race_missing(NumericMatrix pars, DataFrame data,
           pino(j,_) = mparsno(i * n_acc + j,_);
         }
       }
-      NumericVector tmpslow = f_integrate(pino, winnerno(_,i), dfun, pfun, exp(min_ll), UC, UT);
-      NumericVector tmpfast = f_integrate(pino, winnerno(_,i), dfun, pfun, exp(min_ll), LT, LC);
+      NumericVector tmpslow = f_integrate(pino, winnerno(_,i), dfun, pfun, min_ll, UC, UT);
+      NumericVector tmpfast = f_integrate(pino, winnerno(_,i), dfun, pfun, min_ll, LT, LC);
       double tmp = tmpslow[0] + tmpfast[0];
 
       ldstofixno[i] = std::log(std::max(0.0, std::min(tmp, 1.0)));
@@ -540,7 +540,7 @@ double c_log_likelihood_race_missing(NumericMatrix pars, DataFrame data,
       LogicalVector idx(n_acc, 0);
       idx[0] = 1;
 
-      NumericVector pc = f_integrate(pi, idx, dfun, pfun, exp(min_ll), LT, LC);
+      NumericVector pc = f_integrate(pi, idx, dfun, pfun, min_ll, LT, LC);
       double p;
       if (pc[2] != 0 || traits::is_nan<REALSXP>(pc[0])) {
         p = NA_REAL;
@@ -550,7 +550,7 @@ double c_log_likelihood_race_missing(NumericMatrix pars, DataFrame data,
 
       double cf;
       if (p != 0 && !(LT==0 && UT==R_PosInf)) {
-        cf = pr_pt(pi, idx, dfun, pfun, exp(min_ll), LT, UT);
+        cf = pr_pt(pi, idx, dfun, pfun, min_ll, LT, UT);
       } else {
         cf = 1;
       }
@@ -563,13 +563,13 @@ double c_log_likelihood_race_missing(NumericMatrix pars, DataFrame data,
         for (int j = 1; j < n_acc; j++) {
           idx.fill(0);
           idx[j] = 1;
-          pc = f_integrate(pi, idx, dfun, pfun, exp(min_ll), LT, LC);
+          pc = f_integrate(pi, idx, dfun, pfun, min_ll, LT, LC);
           if (pc[2] != 0 || traits::is_nan<REALSXP>(pc[0])) {
             p = NA_REAL;
             break;
           }
           if (pc[0] != 0.0 && !(LT == 0 && UT == R_PosInf)) {
-            cf = pr_pt(pi, idx, dfun, pfun, exp(min_ll), LT, UT);
+            cf = pr_pt(pi, idx, dfun, pfun, min_ll, LT, UT);
           } else{
             cf = 1;
           }
@@ -618,7 +618,7 @@ double c_log_likelihood_race_missing(NumericMatrix pars, DataFrame data,
       LogicalVector idx(n_acc);
       idx[0] = 1;
 
-      NumericVector pc = f_integrate(pi, idx, dfun, pfun, exp(min_ll), UC, UT);
+      NumericVector pc = f_integrate(pi, idx, dfun, pfun, min_ll, UC, UT);
       double p;
       if (pc[2] != 0 || traits::is_nan<REALSXP>(pc[0])) {
         p = NA_REAL;
@@ -628,7 +628,7 @@ double c_log_likelihood_race_missing(NumericMatrix pars, DataFrame data,
 
       double cf;
       if (p != 0 && !(LT==0 && UT==R_PosInf)) {
-        cf = pr_pt(pi, idx, dfun, pfun, exp(min_ll), LT, UT);
+        cf = pr_pt(pi, idx, dfun, pfun, min_ll, LT, UT);
       } else {
         cf = 1;
       }
@@ -641,13 +641,13 @@ double c_log_likelihood_race_missing(NumericMatrix pars, DataFrame data,
         for (int j = 1; j < n_acc; j++) {
           idx.fill(0);
           idx[j] = 1;
-          pc = f_integrate(pi, idx, dfun, pfun, exp(min_ll), UC, UT);
+          pc = f_integrate(pi, idx, dfun, pfun, min_ll, UC, UT);
           if (pc[2] != 0 || traits::is_nan<REALSXP>(pc[0])) {
             p = NA_REAL;
             break;
           }
           if (pc[0] != 0.0 && !(LT == 0 && UT == R_PosInf)) {
-            cf = pr_pt(pi, idx, dfun, pfun, exp(min_ll), LT, UT);
+            cf = pr_pt(pi, idx, dfun, pfun, min_ll, LT, UT);
           } else{
             cf = 1;
           }
@@ -696,14 +696,14 @@ double c_log_likelihood_race_missing(NumericMatrix pars, DataFrame data,
       LogicalVector idx(n_acc);
       idx[0] = 1;
 
-      double pc = pLU(pi, idx, dfun, pfun, exp(min_ll), LT, LC, UC, UT);
+      double pc = pLU(pi, idx, dfun, pfun, min_ll, LT, LC, UC, UT);
       double p;
       double cf;
       if (traits::is_na<REALSXP>(pc)) {
         p = NA_REAL;
       } else{
         if (pc != 0.0 && !(LT == 0 && UT == R_PosInf)) {
-          cf = pr_pt(pi, idx, dfun, pfun, exp(min_ll), LT, UT);
+          cf = pr_pt(pi, idx, dfun, pfun, min_ll, LT, UT);
         } else{
           cf = 1;
         }
@@ -719,13 +719,13 @@ double c_log_likelihood_race_missing(NumericMatrix pars, DataFrame data,
             idx.fill(0);
             idx[j] = 1;
 
-            pc = pLU(pi, idx, dfun, pfun, exp(min_ll), LT, LC, UC, UT);
+            pc = pLU(pi, idx, dfun, pfun, min_ll, LT, LC, UC, UT);
             if (traits::is_na<REALSXP>(pc)) {
               p = NA_REAL;
               break;
             }
             if (pc != 0 && !(LT == 0 && UT == R_PosInf)) {
-              cf = pr_pt(pi, idx, dfun, pfun, exp(min_ll), LT, UT);
+              cf = pr_pt(pi, idx, dfun, pfun, min_ll, LT, UT);
             } else {
               cf = 1;
             }
@@ -778,7 +778,7 @@ double c_log_likelihood_race_missing(NumericMatrix pars, DataFrame data,
           pi(j,_) = tpars(i * n_acc + j , _ );
         }
 
-        cf[i] = pr_pt(pi, winnertrunc(_,i), dfun, pfun, exp(min_ll), LT, UT);
+        cf[i] = pr_pt(pi, winnertrunc(_,i), dfun, pfun, min_ll, LT, UT);
       }
     }
     NumericVector cf_log = rep_each(log(cf), n_acc);
