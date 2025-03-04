@@ -45,6 +45,22 @@ public:
 };
 
 NumericVector f_integrate(Rcpp::NumericMatrix pars,
+                                Rcpp::LogicalVector winner,
+                                Rcpp::NumericVector (*dfun)(NumericVector, NumericMatrix, LogicalVector, double),
+                                Rcpp::NumericVector (*pfun)(NumericVector, NumericMatrix, LogicalVector, double),
+                                double min_ll,
+                                double lower,
+                                double upper)
+{
+  race_f f(pars, winner, dfun, pfun, min_ll);
+  double err_est;
+  int err_code;
+  double res = integrate(f, lower, upper, err_est, err_code);
+  NumericVector out{res, err_est, (double) err_code};
+  return out;
+}
+
+NumericVector f_integrate_slow(Rcpp::NumericMatrix pars,
                           Rcpp::LogicalVector winner,
                           Rcpp::NumericVector (*dfun)(NumericVector, NumericMatrix, LogicalVector, double),
                           Rcpp::NumericVector (*pfun)(NumericVector, NumericMatrix, LogicalVector, double),

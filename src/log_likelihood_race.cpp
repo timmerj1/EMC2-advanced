@@ -466,7 +466,7 @@ double c_log_likelihood_race_missing(NumericMatrix pars, DataFrame data,
           pislow(j,_) = mparsslow(i * n_acc + j,_);
         }
       }
-      NumericVector tmp = f_integrate(pislow, winnerslow(_,i), dfun, pfun, min_ll, UC, UT);
+      NumericVector tmp = f_integrate_slow(pislow, winnerslow(_,i), dfun, pfun, min_ll, UC, UT);
       ldstofixslow[i] = std::log(std::max(0.0, std::min(tmp[0], 1.0)));
     }
     lds[tofixslow] = ldstofixslow;
