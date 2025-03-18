@@ -6,7 +6,7 @@
 #include "model_RDM.h"
 #include "model_DDM.h"
 #include "advantage.h"
-#include "numeric_integration.h"
+#include "numerical_integration.h"
 using namespace Rcpp;
 
 
@@ -466,7 +466,7 @@ double c_log_likelihood_race_missing(NumericMatrix pars, DataFrame data,
           pislow(j,_) = mparsslow(i * n_acc + j,_);
         }
       }
-      NumericVector tmp = f_integrate(pislow, winnerslow(_,i), dfun, pfun, exp(min_ll), UC, UT);
+      NumericVector tmp = f_integrate_slow(pislow, winnerslow(_,i), dfun, pfun, exp(min_ll), UC, UT);
       ldstofixslow[i] = std::log(std::max(0.0, std::min(tmp[0], 1.0)));
     }
     lds[tofixslow] = ldstofixslow;
@@ -500,7 +500,7 @@ double c_log_likelihood_race_missing(NumericMatrix pars, DataFrame data,
           pino(j,_) = mparsno(i * n_acc + j,_);
         }
       }
-      NumericVector tmpslow = f_integrate(pino, winnerno(_,i), dfun, pfun, exp(min_ll), UC, UT);
+      NumericVector tmpslow = f_integrate_slow(pino, winnerno(_,i), dfun, pfun, exp(min_ll), UC, UT);
       NumericVector tmpfast = f_integrate(pino, winnerno(_,i), dfun, pfun, exp(min_ll), LT, LC);
       double tmp = tmpslow[0] + tmpfast[0];
 
